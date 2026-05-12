@@ -39,12 +39,13 @@ func Load() (*Config, error) {
 		return nil, fmt.Errorf("invalid PORT: %w", err)
 	}
 
-	refreshInterval, err := getEnvDuration("REFRESH_INTERVAL", 30*time.Minute)
+	// I prefer a longer refresh interval to reduce outbound requests
+	refreshInterval, err := getEnvDuration("REFRESH_INTERVAL", 60*time.Minute)
 	if err != nil {
 		return nil, fmt.Errorf("invalid REFRESH_INTERVAL: %w", err)
 	}
 
-	cacheTTL, err := getEnvDuration("CACHE_TTL", 5*time.Minute)
+	cacheTTL, err := getEnvDuration("CACHE_TTL", 10*time.Minute)
 	if err != nil {
 		return nil, fmt.Errorf("invalid CACHE_TTL: %w", err)
 	}
@@ -116,8 +117,7 @@ func getEnvBool(key string, defaultVal bool) bool {
 }
 
 // getEnvDuration returns the duration value of the named environment variable,
-// or defaultVal if the variable is not set. Values should be in Go duration
-// format (e.g. "30m", "1h", "5s").
+// or defaultVal if the variable is not set.
 func getEnvDuration(key string, defaultVal time.Duration) (time.Duration, error) {
 	val := os.Getenv(key)
 	if val == "" {
