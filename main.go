@@ -41,12 +41,13 @@ func main() {
 
 	log.Printf("Starting %s v%s on %s", appName, appVersion, addr)
 
+	// Increased timeouts to better handle slow upstream subscription fetches
 	server := &http.Server{
 		Addr:         addr,
 		Handler:      mux,
-		ReadTimeout:  30 * time.Second,
-		WriteTimeout: 30 * time.Second,
-		IdleTimeout:  60 * time.Second,
+		ReadTimeout:  60 * time.Second,
+		WriteTimeout: 60 * time.Second,
+		IdleTimeout:  120 * time.Second,
 	}
 
 	if err := server.ListenAndServe(); err != nil {
