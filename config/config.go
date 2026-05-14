@@ -54,8 +54,9 @@ func Load() (*Config, error) {
 	cfg := &Config{
 		Host:            getEnv("HOST", "0.0.0.0"),
 		Port:            port,
-		ReadTimeout:     15 * time.Second,
-		WriteTimeout:    15 * time.Second,
+		// Bumped timeouts from 15s to 30s — upstream sub endpoints can be slow
+		ReadTimeout:     30 * time.Second,
+		WriteTimeout:    30 * time.Second,
 		SubURL:          getEnv("SUB_URL", ""),
 		RefreshInterval: refreshInterval,
 		UserAgent:       getEnv("USER_AGENT", "sub2api/1.0"),
@@ -116,5 +117,3 @@ func getEnvBool(key string, defaultVal bool) bool {
 	}
 	return b
 }
-
-// getEnvDuration returns t
