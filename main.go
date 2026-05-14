@@ -41,12 +41,14 @@ func main() {
 
 	log.Printf("Starting %s v%s on %s", appName, appVersion, addr)
 
-	// Increased timeouts to better handle slow upstream subscription fetches
+	// Increased timeouts to better handle slow upstream subscription fetches.
+	// Bumped ReadTimeout and WriteTimeout to 90s since some subscription sources
+	// can be particularly sluggish.
 	server := &http.Server{
 		Addr:         addr,
 		Handler:      mux,
-		ReadTimeout:  60 * time.Second,
-		WriteTimeout: 60 * time.Second,
+		ReadTimeout:  90 * time.Second,
+		WriteTimeout: 90 * time.Second,
 		IdleTimeout:  120 * time.Second,
 	}
 
