@@ -44,12 +44,14 @@ func main() {
 	// Increased timeouts to better handle slow upstream subscription fetches.
 	// Bumped ReadTimeout and WriteTimeout to 90s since some subscription sources
 	// can be particularly sluggish.
+	// Note: IdleTimeout bumped to 180s personally — I keep this running behind
+	// a reverse proxy that holds connections open longer.
 	server := &http.Server{
 		Addr:         addr,
 		Handler:      mux,
 		ReadTimeout:  90 * time.Second,
 		WriteTimeout: 90 * time.Second,
-		IdleTimeout:  120 * time.Second,
+		IdleTimeout:  180 * time.Second,
 	}
 
 	if err := server.ListenAndServe(); err != nil {
